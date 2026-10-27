@@ -1,0 +1,80 @@
+<h1>Admin Page<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Meal Ticket System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard">
+
+  <header>
+    <h1>Admin Dashboard</h1>
+    <div>
+      <span id="welcome"></span>
+      <button id="logoutBtn" class="small">Log out</button>
+    </div>
+  </header>
+
+  <main>
+    <p id="message"></p>
+
+    <section class="card">
+      <h2>Add a user</h2>
+      <form id="userForm">
+        <label>Full name</label>
+        <input type="text" id="full_name" required>
+        <label>Staff ID</label>
+        <input type="text" id="staff_id" required>
+        <label>Password</label>
+        <input type="text" id="password" required>
+        <label>Role</label>
+        <select id="role">
+          <option value="staff">Staff</option>
+          <option value="attendant">Canteen attendant</option>
+          <option value="admin">Admin</option>
+        </select>
+        <button type="submit">Add user</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Issue meal tickets</h2>
+      <form id="ticketForm">
+        <label>Who is it for?</label>
+        <select id="ticketUser"></select>
+        <label>Meal date</label>
+        <input type="date" id="ticketDate" required>
+        <button type="submit">Issue ticket(s)</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Tickets for a date</h2>
+      <input type="date" id="viewDate">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Staff ID</th><th>Status</th><th>Collected at</th></tr>
+          </thead>
+          <tbody id="ticketsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>All users</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Staff ID</th><th>Role</th></tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/admin.js"></script>
+</body>
+</html></h1>

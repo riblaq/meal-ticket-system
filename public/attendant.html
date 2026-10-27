@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendant - Meal Ticket System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard">
+
+  <header>
+    <h1>Canteen Attendant</h1>
+    <div>
+      <span id="welcome"></span>
+      <button id="logoutBtn" class="small">Log out</button>
+    </div>
+  </header>
+
+  <main>
+    <p id="message"></p>
+
+    <section class="card">
+      <h2>Serve a meal</h2>
+      <label>Search by name or Staff ID</label>
+      <input type="text" id="search" placeholder="Start typing...">
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Staff ID</th><th>Today's ticket</th><th></th></tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/attendant.js"></script>
+</body>
+</html>

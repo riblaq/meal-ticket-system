@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tickets - Meal Ticket System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard">
+
+  <header>
+    <h1>My Meal Tickets</h1>
+    <div>
+      <span id="welcome"></span>
+      <button id="logoutBtn" class="small">Log out</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Today</h2>
+      <p id="todayStatus"></p>
+    </section>
+
+    <section class="card">
+      <h2>My ticket history</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Status</th><th>Collected at</th></tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/staff.js"></script>
+</body>
+</html>
