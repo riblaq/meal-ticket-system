@@ -2,7 +2,7 @@ const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 
 // 1. Open (or create) the database file
-const db = new Database('meal-ticket.db');
+const db = new Database(process.env.DB_PATH || 'meal-ticket.db');
 
 // 2. Create the users table
 db.exec(`
@@ -34,11 +34,18 @@ db.exec(`
 const adminExists = db.prepare("SELECT id FROM users WHERE role = 'admin'").get();
 
 if (!adminExists) {
-  const hashed = bcrypt.hashSync('admin123', 10);
-  db.prepare(
-    'INSERT INTO users (full_name, staff_id, password, role) VALUES (?, ?, ?, ?)'
-  ).run('System Admin', 'ADMIN001', hashed, 'admin');
-  console.log('First admin created. Staff ID: ADMIN001, Password: admin123');
+  const adminId = process.env.ADMIN_STAFF_ID || 'ADMIN001';
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminPassword) {
+    console.warn('ADMIN_PASSWORD is not set, so no admin was created.');
+  } else {
+    const hashed = bcrypt.hashSync(adminPassword, 10);
+    db.prepare(
+      'INSERT INTO users (full_name, staff_id, password, role) VALUES (?, ?, ?, ?)'
+    ).run('System Admin', adminId, hashed, 'admin');
+    console.log('First admin created. Staff ID: ' + adminId);
+  }
 }
 
 module.exports = db;

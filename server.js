@@ -4,11 +4,22 @@ const app = express();
 
 require('./database');
 
+if (!process.env.SESSION_SECRET) {
+  console.warn('WARNING: SESSION_SECRET is not set. Using an insecure development secret.');
+}
+
+app.set('trust proxy', 1); // Render sits behind a proxy
+
 app.use(express.json());
 app.use(session({
-  secret: 'meal-ticket-secret-key',
+  secret: process.env.SESSION_SECRET || 'dev-only-secret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production'
+  }
 }));
 app.use(express.static('public'));
 
@@ -17,6 +28,7 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/attendant', require('./routes/attendant'));
 app.use('/api/staff', require('./routes/staff'));
 
-app.listen(3000, () => {
-  console.log('Running on http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log('Running on port ' + PORT);
 });
