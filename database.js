@@ -2,7 +2,12 @@ const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 
 // 1. Open (or create) the database file
-const db = new Database(process.env.DB_PATH || 'meal-ticket.db');
+const fs = require('fs');
+const path = require('path');
+
+const dbPath = process.env.DB_PATH || 'meal-ticket.db';
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+const db = new Database(dbPath);
 
 // 2. Create the users table
 db.exec(`
