@@ -1,4 +1,4 @@
-<h1>Admin Page<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -27,7 +27,10 @@
         <label>Staff ID</label>
         <input type="text" id="staff_id" required>
         <label>Password</label>
-        <input type="text" id="password" required>
+        <input type="password" id="password" required autocomplete="new-password">
+        <label class="show-pass">
+          <input type="checkbox" id="showNewPassword"> Show password
+        </label>
         <label>Role</label>
         <select id="role">
           <option value="staff">Staff</option>
@@ -67,7 +70,7 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Name</th><th>Staff ID</th><th>Role</th></tr>
+           <tr><th>Name</th><th>Staff ID</th><th>Role</th><th></th></tr>
           </thead>
           <tbody id="usersBody"></tbody>
         </table>
@@ -77,4 +80,4 @@
 
   <script src="js/admin.js"></script>
 </body>
-</html></h1>
+</html>

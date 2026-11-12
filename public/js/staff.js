@@ -24,7 +24,7 @@ async function init() {
 
   data.forEach((ticket) => {
     const tr = document.createElement('tr');
-    [ticket.meal_date, ticket.status, ticket.redeemed_at || '-'].forEach((value) => {
+    [ticket.meal_date, ticket.label, ticket.redeemed_at || '-'].forEach((value) => {
       const td = document.createElement('td');
       td.textContent = value;
       tr.appendChild(td);

@@ -74,7 +74,12 @@ router.get('/tickets', (req, res) => {
   }
 
   const tickets = db.prepare(`
-    SELECT users.full_name, users.staff_id, tickets.status, tickets.redeemed_at
+        SELECT users.full_name, users.staff_id, tickets.status, tickets.redeemed_at,
+      CASE
+        WHEN tickets.status = 'redeemed' THEN 'used'
+        WHEN tickets.meal_date < date('now', 'localtime') THEN 'not used'
+        ELSE 'issued'
+      END AS label
     FROM tickets
     JOIN users ON users.id = tickets.user_id
     WHERE tickets.meal_date = ?
@@ -83,5 +88,26 @@ router.get('/tickets', (req, res) => {
 
   res.json(tickets);
 });
+// Delete a user (and their tickets)
+router.delete('/users/:id', (req, res) => {
+  const id = Number(req.params.id);
 
+  if (id === req.session.user.id) {
+    return res.status(400).json({ error: 'You cannot delete your own account' });
+  }
+
+  const user = db.prepare('SELECT id FROM users WHERE id = ?').get(id);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  const remove = db.transaction(() => {
+    db.prepare('UPDATE tickets SET redeemed_by = NULL WHERE redeemed_by = ?').run(id);
+    db.prepare('DELETE FROM tickets WHERE user_id = ?').run(id);
+    db.prepare('DELETE FROM users WHERE id = ?').run(id);
+  });
+  remove();
+
+  res.json({ message: 'User deleted' });
+});
 module.exports = router;

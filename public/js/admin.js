@@ -41,7 +41,20 @@ async function loadUsers() {
   select.appendChild(allOption);
 
   data.forEach((user) => {
-    addRow(tbody, [user.full_name, user.staff_id, user.role]);
+        const tr = document.createElement('tr');
+    [user.full_name, user.staff_id, user.role].forEach((value) => {
+      const td = document.createElement('td');
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+    const actionTd = document.createElement('td');
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.className = 'small';
+    deleteBtn.addEventListener('click', () => deleteUser(user));
+    actionTd.appendChild(deleteBtn);
+    tr.appendChild(actionTd);
+    tbody.appendChild(tr);
     if (user.role === 'staff') {
       const option = document.createElement('option');
       option.value = user.id;
@@ -62,7 +75,7 @@ async function loadTickets() {
     addRow(tbody, [
       ticket.full_name,
       ticket.staff_id,
-      ticket.status,
+            ticket.label,
       ticket.redeemed_at || '-'
     ]);
   });
@@ -119,5 +132,17 @@ async function init() {
   await loadUsers();
   await loadTickets();
 }
-
+async function deleteUser(user) {
+  if (!confirm('Delete ' + user.full_name + '? Their tickets will be deleted too.')) return;
+  const { ok, data } = await api('/api/admin/users/' + user.id, 'DELETE');
+  showMessage(ok ? data.message : data.error, !ok);
+  if (ok) {
+    loadUsers();
+    loadTickets();
+  }
+}
 init();
+
+document.getElementById('showNewPassword').addEventListener('change', (event) => {
+  document.getElementById('password').type = event.target.checked ? 'text' : 'password';
+});

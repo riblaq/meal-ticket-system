@@ -25,3 +25,6 @@ form.addEventListener('submit', async (event) => {
   else if (data.role === 'attendant') window.location.href = 'attendant.html';
   else window.location.href = 'staff.html';
 });
+document.getElementById('showPassword').addEventListener('change', (event) => {
+  document.getElementById('password').type = event.target.checked ? 'text' : 'password';
+});

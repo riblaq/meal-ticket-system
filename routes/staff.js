@@ -9,7 +9,12 @@ router.use(requireRole('staff'));
 // This person's own tickets, newest first
 router.get('/tickets', (req, res) => {
   const tickets = db.prepare(`
-    SELECT meal_date, status, redeemed_at
+        SELECT meal_date, status, redeemed_at,
+      CASE
+        WHEN status = 'redeemed' THEN 'used'
+        WHEN meal_date < date('now', 'localtime') THEN 'not used'         WHEN meal_date > date('now', 'localtime') THEN 'pending'
+        ELSE 'issued'
+      END AS label
     FROM tickets
     WHERE user_id = ?
     ORDER BY meal_date DESC
